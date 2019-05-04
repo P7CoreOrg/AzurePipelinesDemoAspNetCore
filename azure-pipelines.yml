@@ -47,12 +47,11 @@ steps:
     displayName: 'dotnet build $(buildConfiguration)'
 
   # do this after your tests have run
-  - script:  dotnet tool install --global dotnet-reportgenerator-globaltool --version 4.1.4  
-    displayName: dotnet tool install dotnet-reportgenerator-globaltool
 
-  - script: dotnet test ./src/xUnit_TheWebAppTests/xUnit_TheWebAppTests.csproj --logger trx --collect "Code coverage" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura  
-    displayName: dotnet test xUnit_TheWebAppTests
-
+  - script: |
+    displayName: Unit Tests
+    dotnet test ./src/xUnit_TheWebAppTests --logger trx --collect "Code coverage" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura  
+  
   - task: CopyFiles@2
     displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
     inputs:
@@ -60,13 +59,26 @@ steps:
       SourceFolder: '$(Build.SourcesDirectory)'
       Contents: |
         **\coverage.cobertura.xml
-
+  
+  - script: |
+    displayName: Unit Test Reports
+    dotnet tool install --global dotnet-reportgenerator-globaltool --version 4.1.4  
+    .\reportgenerator "-reports:$(Build.SourcesDirectory)/src/xUnit_TheWebAppTests/coverage.cobertura.xml" "-targetdir:results" "-reporttypes:HTMLInline;HTMLChart"
+  
   - task: PublishTestResults@2
     condition: succeededOrFailed()
     inputs:
       testRunner: VSTest
       testResultsFiles: '**/*.trx'
+
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      summaryFileLocation: $(Build.SourcesDirectory)/results/src/xUnit_TheWebAppTests\coverage.cobertura.xml
+      reportDirectory: $(Build.SourcesDirectory)\results
+      codecoverageTool: cobertura
   
+
+
   - script: dotnet publish --no-restore --no-build --self-contained --configuration $(buildConfiguration) --version-suffix $(CIVersionSuffix) /property:Version=$(version)-CI ./src/$(SolutionName).sln
     displayName: dotnet publish CI
     condition: and(succeeded(), eq(variables['DoPreRelease'], 'false'))
