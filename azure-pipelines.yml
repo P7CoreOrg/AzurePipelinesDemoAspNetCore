@@ -56,11 +56,11 @@ steps:
       testRunner: VSTest
       testResultsFiles: '**/*.trx'
 
-  - script: dotnet  pack --include-source --include-symbols /property:Version=$(PreReleaseVersion)
+  - script: dotnet  pack --include-source --include-symbols /property:Version=$(PreReleaseVersion) ./src/$(SolutionName).sln
     displayName: dotnet  pack PreRelease
     condition: and(succeeded(), eq(variables['DoPreRelease'], 'true'))
   
-  - script: dotnet  pack --include-source --include-symbols /property:Version=$(version)-CI
+  - script: dotnet  pack --include-source --include-symbols /property:Version=$(version)-CI ./src/$(SolutionName).sln
     displayName: dotnet pack CI
     condition: and(succeeded(), eq(variables['DoPreRelease'], 'false'))
  
