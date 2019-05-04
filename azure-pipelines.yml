@@ -20,7 +20,7 @@ pool:
 
 variables:
   BuildConfiguration: 'Release'
-  DotNetCoreVersion: '2.2.106'
+  DotNetCoreVersion: '2.2.203'
   BuildPlatform: 'Any CPU'
   major: 1
   minor: 0
@@ -38,5 +38,9 @@ steps:
     displayName: Install .NET Core $(DotNetCoreVersion)
     inputs:
       version: $(DotNetCoreVersion)
-  - script: dotnet restore ./src/TheSolution.sln
-    displayName: dotnet restore 
+#  - script: dotnet restore ./src/TheSolution.sln
+#    displayName: dotnet restore 
+
+  - script: echo DoPreRelease:$(DoPreRelease)
+    displayName: 'DoPreRelease TRUE'
+    condition: and(succeeded(), eq(variables['DoPreRelease'], 'true'))
