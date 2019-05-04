@@ -28,7 +28,7 @@ variables:
   # creates a counter called versioncounter and seeds it at 100 and then assigns the value to a variable named buildNo.
   buildNo: $[counter('geomversioncounter', 100)]
   version: '$(major).$(minor).$(buildNo)'
-  PreReleaseVersion: '1.0.0-beta-1'
+  PreReleaseVersion: '$(major).0.$(minor)-beta-1'
   DoPreRelease: false 
 
 steps:
@@ -56,14 +56,14 @@ steps:
       testRunner: VSTest
       testResultsFiles: '**/*.trx'
 
-  - task: DotNetCoreCLI@2
-    displayName: 'Pack DoPreRelease'
-    inputs:
-      command: pack
-      packagesToPack: '**/*.sln'
-      versioningScheme: byEnvVar
-      versionEnvVar: PreReleaseVersion
-      condition: and(succeeded(), eq(variables['DoPreRelease'], 'true'))
+  - script: dotnet  pack --include-source --include-symbols /property:Version=$(PreReleaseVersion)
+    displayName: dotnet  pack PreRelease
+    condition: and(succeeded(), eq(variables['DoPreRelease'], 'true'))
+  
+  - script: dotnet  pack --include-source --include-symbols /property:Version=$(version)-CI
+    displayName: dotnet pack CI
+    condition: and(succeeded(), eq(variables['DoPreRelease'], 'false'))
+ 
 
   - script: echo DoPreRelease:$(DoPreRelease)
     displayName: 'DoPreRelease TRUE'
