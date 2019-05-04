@@ -22,6 +22,7 @@ variables:
   BuildConfiguration: 'Release'
   DotNetCoreVersion: '2.2.203'
   BuildPlatform: 'Any CPU'
+  SolutionName: 'TheSolution'
   major: 1
   minor: 0
   # creates a counter called versioncounter and seeds it at 100 and then assigns the value to a variable named buildNo.
@@ -38,8 +39,16 @@ steps:
     displayName: Install .NET Core $(DotNetCoreVersion)
     inputs:
       version: $(DotNetCoreVersion)
-#  - script: dotnet restore ./src/TheSolution.sln
-#    displayName: dotnet restore 
+  - script: dotnet restore ./src/$(SolutionName).sln
+    displayName: dotnet restore 
+
+  - script: dotnet build --configuration $(buildConfiguration) /p:AssemblyVersion=$(version) ./src/$(SolutionName).sln
+    displayName: 'dotnet build $(buildConfiguration)'
+
+  # do this after your tests have run
+  
+  - script: dotnet test ./src/xUnit_TheWebAppTests/xUnit_TheWebAppTests.csproj --logger trx --collect "Code coverage"
+    displayName: dotnet test xUnit_TheWebAppTests
 
   - script: echo DoPreRelease:$(DoPreRelease)
     displayName: 'DoPreRelease TRUE'
