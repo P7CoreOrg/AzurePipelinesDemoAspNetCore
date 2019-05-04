@@ -57,7 +57,7 @@ steps:
       testRunner: VSTest
       testResultsFiles: '**/*.trx'
   
-  - script: dotnet publish --no-restore --no-build --self-contained --configuration $(buildConfiguration) --version-suffix $(CIVersionSuffix) /property:Version=$(version)-CI ./src/$(SolutionName).sln
+  - script: dotnet publish --output $(Build.ArtifactStagingDirectory)/publish --no-restore --no-build --self-contained --configuration $(buildConfiguration) --version-suffix $(CIVersionSuffix) /property:Version=$(version)-CI ./src/$(SolutionName).sln
     displayName: dotnet publish CI
     condition: and(succeeded(), eq(variables['DoPreRelease'], 'false'))
 
@@ -73,7 +73,7 @@ steps:
 # Archive files using compression formats such as .7z, .rar, .tar.gz, and .zip.
   - task: ArchiveFiles@2
     inputs:
-      rootFolderOrFile: '$(Build.BinariesDirectory)' 
+      rootFolderOrFile: '$(Build.SourcesDirectory)' 
       includeRootFolder: true 
       archiveType: 'zip' # Options: zip, 7z, tar, wim
     #tarCompression: 'gz' # Optional. Options: gz, bz2, xz, none
