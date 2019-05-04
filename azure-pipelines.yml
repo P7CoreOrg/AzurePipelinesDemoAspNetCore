@@ -30,7 +30,7 @@ variables:
   PreReleaseVersion: '1.0.0-beta-1'
   DoPreRelease: false 
 
- steps:
+steps:
   - script: echo Build.Reason:$(Build.Reason) version:$(version) DoPreRelease:$(DoPreRelease)
     displayName: 'BuildNumber'
   
