@@ -50,6 +50,12 @@ steps:
   - script: dotnet test ./src/xUnit_TheWebAppTests/xUnit_TheWebAppTests.csproj --logger trx --collect "Code coverage"
     displayName: dotnet test xUnit_TheWebAppTests
 
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      
   - script: echo DoPreRelease:$(DoPreRelease)
     displayName: 'DoPreRelease TRUE'
     condition: and(succeeded(), eq(variables['DoPreRelease'], 'true'))
