@@ -48,9 +48,8 @@ steps:
 
   # do this after your tests have run
 
-  - script: |
-    displayName: Unit Tests
-    dotnet test ./src/xUnit_TheWebAppTests --logger trx --collect "Code coverage" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
+  - script: dotnet test ./src/xUnit_TheWebAppTests --logger trx --collect "Code coverage" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
+    displayName: Unit Test Reports
   
   - task: CopyFiles@2
     displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
@@ -60,9 +59,10 @@ steps:
       Contents: |
         **\coverage.cobertura.xml
   
-  - script: |
-    dotnet tool install --global dotnet-reportgenerator-globaltool --version 4.1.4  
-    .\reportgenerator "-reports:$(Build.SourcesDirectory)/src/xUnit_TheWebAppTests/coverage.cobertura.xml" "-targetdir:results" "-reporttypes:HTMLInline;HTMLChart"
+  - script: dotnet tool install --global dotnet-reportgenerator-globaltool --version 4.1.4  
+    displayName: Install dotnet-reportgenerator-globaltool
+
+  - script:  .\reportgenerator "-reports:$(Build.SourcesDirectory)/src/xUnit_TheWebAppTests/coverage.cobertura.xml" "-targetdir:results" "-reporttypes:HTMLInline;HTMLChart"
     displayName: Unit Test Reports
 
   - task: PublishTestResults@2
