@@ -69,6 +69,22 @@ steps:
     displayName: dotnet pack CI
     condition: and(succeeded(), eq(variables['DoPreRelease'], 'false'))
  
+  - task: CopyFiles@2
+    displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+    inputs:
+      SourceFolder: '$(build.sourcesdirectory)'
+      Contents: '**\bin\$(BuildConfiguration)\*.nupkg'
+      TargetFolder: '$(build.artifactstagingdirectory)'
+      condition: succeededOrFailed()
+
+  - task: CopyFiles@2
+    displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+    inputs:
+      SourceFolder: '$(build.sourcesdirectory)'
+      Contents: '**\bin\$(BuildConfiguration)\*.zip'
+      TargetFolder: '$(build.artifactstagingdirectory)'
+      condition: succeededOrFailed()
+
   - task: PublishBuildArtifacts@1
     inputs:
       pathtoPublish: '$(Build.ArtifactStagingDirectory)'
