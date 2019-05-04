@@ -47,9 +47,19 @@ steps:
     displayName: 'dotnet build $(buildConfiguration)'
 
   # do this after your tests have run
-  
-  - script: dotnet test ./src/xUnit_TheWebAppTests/xUnit_TheWebAppTests.csproj --logger trx --collect "Code coverage"
+  - script:  dotnet tool install --global dotnet-reportgenerator-globaltool --version 4.1.4  
+    displayName: dotnet tool install dotnet-reportgenerator-globaltool
+
+  - script: dotnet test ./src/xUnit_TheWebAppTests/xUnit_TheWebAppTests.csproj --logger trx --collect "Code coverage" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura  
     displayName: dotnet test xUnit_TheWebAppTests
+
+  - task: CopyFiles@2
+    displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+    inputs:
+      TargetFolder: '$(Build.SourcesDirectory)\Results'
+      SourceFolder: '$(Build.SourcesDirectory)'
+      Contents: |
+        **\coverage.cobertura.xml
 
   - task: PublishTestResults@2
     condition: succeededOrFailed()
@@ -76,6 +86,7 @@ steps:
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
       SourceFolder: '$(Build.SourcesDirectory)'
       Contents: |
+        **\results\**
         **\publish\**
         **\bin\**\*.nupkg
         !.git/**/*
@@ -85,4 +96,3 @@ steps:
     inputs:
       pathtoPublish: '$(Build.ArtifactStagingDirectory)'
       artifactName: drop
- 
