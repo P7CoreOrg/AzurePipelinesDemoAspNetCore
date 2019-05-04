@@ -57,7 +57,7 @@ steps:
       testRunner: VSTest
       testResultsFiles: '**/*.trx'
   
-  - script: dotnet publish --no-restore -no-build --self-contained --configuration $(buildConfiguration) --version-suffix $(CIVersionSuffix) /property:Version=$(version)-CI ./src/$(SolutionName).sln
+  - script: dotnet publish --no-restore --no-build --self-contained --configuration $(buildConfiguration) --version-suffix $(CIVersionSuffix) /property:Version=$(version)-CI ./src/$(SolutionName).sln
     displayName: dotnet publish CI
     condition: and(succeeded(), eq(variables['DoPreRelease'], 'false'))
 
