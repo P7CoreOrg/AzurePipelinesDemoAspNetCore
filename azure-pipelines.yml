@@ -59,7 +59,7 @@ steps:
       Contents: |
         **\coverage.cobertura.xml
   
-  - script: dotnet tool install --global dotnet-reportgenerator-globaltool --version 4.1.4  
+  - script: dotnet tool install --global dotnet-reportgenerator-globaltool --tool-path . --version 4.1.4  
     displayName: Install dotnet-reportgenerator-globaltool
 
   - script:  .\reportgenerator "-reports:$(Build.SourcesDirectory)/src/xUnit_TheWebAppTests/coverage.cobertura.xml" "-targetdir:results" "-reporttypes:HTMLInline;HTMLChart"
