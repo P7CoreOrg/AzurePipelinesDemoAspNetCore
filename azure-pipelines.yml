@@ -14,3 +14,29 @@ trigger:
     - README.md
     - CHANGELOG.md
     - CONTRIBUTING.md
+
+pool:
+  vmImage: 'vs2017-win2016'
+
+variables:
+  BuildConfiguration: 'Release'
+  DotNetCoreVersion: '2.2.106'
+  BuildPlatform: 'Any CPU'
+  major: 1
+  minor: 0
+  # creates a counter called versioncounter and seeds it at 100 and then assigns the value to a variable named buildNo.
+  buildNo: $[counter('geomversioncounter', 100)]
+  version: '$(major).$(minor).$(buildNo)'
+  PreReleaseVersion: '1.0.0-beta-1'
+  DoPreRelease: false 
+
+ steps:
+  - script: echo Build.Reason:$(Build.Reason) version:$(version) DoPreRelease:$(DoPreRelease)
+    displayName: 'BuildNumber'
+  
+  - task: DotNetCoreInstaller@0
+    displayName: Install .NET Core $(DotNetCoreVersion)
+    inputs:
+      version: $(DotNetCoreVersion)
+  - script: dotnet restore ./src/GraphQL-AspNetCore-2.2.sln
+    displayName: dotnet restore 
