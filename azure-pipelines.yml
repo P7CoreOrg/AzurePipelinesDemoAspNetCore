@@ -38,5 +38,5 @@ steps:
     displayName: Install .NET Core $(DotNetCoreVersion)
     inputs:
       version: $(DotNetCoreVersion)
-  - script: dotnet restore ./src/TheSolution.slnn
+  - script: dotnet restore ./src/TheSolution.sln
     displayName: dotnet restore 
