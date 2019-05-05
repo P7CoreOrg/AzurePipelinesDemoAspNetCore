@@ -8,4 +8,6 @@ namespace DemoIdentityModelExtras
         HttpMessageHandler HttpMessageHandler { get; }
         HttpClient HttpClient { get; }
     }
+
+
 }

@@ -18,6 +18,7 @@ namespace XUnitHelpers
 
         // RelativePathToHostProject = @"..\..\..\..\TheWebApp";
         protected abstract string RelativePathToHostProject { get; }
+
         public TestServerFixture()
         {
             var contentRootPath = GetContentRootPath();
@@ -26,7 +27,14 @@ namespace XUnitHelpers
                 .UseEnvironment("Development")
                 .ConfigureServices(services =>
                 {
-                    services.TryAddTransient<IDefaultHttpClientFactory, TestDefaultHttpClientFactory>();
+                    services.RemoveAll<IDefaultHttpClientFactory>();
+                    services.TryAddTransient<IDefaultHttpClientFactory>(serviceProvider =>
+                    {
+                        return new TestDefaultHttpClientFactory()
+                        {
+                            TestServer = _testServer
+                        };
+                    });
                 })
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
@@ -34,7 +42,7 @@ namespace XUnitHelpers
                     LoadConfigurations(config, environmentName);
 
                 })
-                .UseStartup<TStartup>();  // Uses Start up class from your API Host project to configure the test server
+                .UseStartup<TStartup>(); // Uses Start up class from your API Host project to configure the test server
 
             _testServer = new TestServer(builder);
             Client = _testServer.CreateClient();

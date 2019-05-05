@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DemoIdentityModelExtras;
 using DemoLibrary;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,16 +14,23 @@ namespace TheWebApp.Controllers
     public class SomeThingController : ControllerBase
     {
         private IDog _dog;
+        private IDefaultHttpClientFactory _defaultHttpClientFactory;
 
-        public SomeThingController(IDog dog)
+        public SomeThingController(
+            IDefaultHttpClientFactory defaultHttpClientFactory,
+            IDog dog)
         {
             _dog = dog;
+            _defaultHttpClientFactory = defaultHttpClientFactory;
 
         }
         // GET: api/SomeThing
         [HttpGet]
         public IEnumerable<string> Get()
         {
+            var httpClient = _defaultHttpClientFactory.HttpClient;
+            var httpMessageHandler = _defaultHttpClientFactory.HttpMessageHandler;
+
             return new string[] { _dog.Name };
         }
 

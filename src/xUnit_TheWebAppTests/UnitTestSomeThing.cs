@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using DemoIdentityModelExtras;
 using Newtonsoft.Json;
 using Shouldly;
 using Xunit;
@@ -24,6 +25,10 @@ namespace xUnit_TheWebAppTests
             _fixture.ShouldNotBeNull();
             var client = _fixture.Client;
             client.ShouldNotBeNull();
+
+            var messageHandler = _fixture.MessageHandler;
+            messageHandler.ShouldNotBeNull();
+
         }
         [Fact]
         public async Task Test_Get_NotFound()
