@@ -61,11 +61,9 @@ namespace xUnit_TheWebAppTests
         [Fact]
         public async Task Test_from_external_Success()
         {
+
             var client = _fixture.Client;
-            var req = new HttpRequestMessage(HttpMethod.Get, "/api/SomeThing/from-external")
-            {
-                // Content = new FormUrlEncodedContent(dict)
-            };
+            var req = new HttpRequestMessage(HttpMethod.Get, "/api/SomeThing/from-external");
             var response = await client.SendAsync(req);
             response.StatusCode.ShouldBe(System.Net.HttpStatusCode.OK);
             var jsonString = await response.Content.ReadAsStringAsync();
@@ -74,6 +72,15 @@ namespace xUnit_TheWebAppTests
             var result = JsonConvert.DeserializeObject<string>(jsonString);
             result.ShouldNotBe("HttpContext:true");
 
+            req = new HttpRequestMessage(HttpMethod.Get, "/api/SomeThing/from-external");
+
+            response = await client.SendAsync(req);
+            response.StatusCode.ShouldBe(System.Net.HttpStatusCode.OK);
+            jsonString = await response.Content.ReadAsStringAsync();
+            jsonString.ShouldNotBeNullOrWhiteSpace();
+
+            result = JsonConvert.DeserializeObject<string>(jsonString);
+            result.ShouldNotBe("HttpContext:true");
 
         }
         [Fact]
