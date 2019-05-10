@@ -12,7 +12,7 @@ namespace XUnitHelpers
 {
     public abstract class TestServerFixture<TStartup> : IDisposable where TStartup : class
     {
-        private readonly TestServer _testServer;
+        public readonly TestServer _testServer;
         public HttpClient Client { get; }
         public HttpMessageHandler MessageHandler { get; }
 

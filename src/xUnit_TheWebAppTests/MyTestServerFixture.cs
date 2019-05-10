@@ -1,10 +1,8 @@
-﻿
-
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using TheWebApp;
 using XUnitHelpers;
 
-namespace XUnitTestServerBase
+namespace xUnit_TheWebAppTests
 {
 
     public class MyTestServerFixture : TestServerFixture<Startup>
