@@ -1,10 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using TheWebApp;
 using XUnitHelpers;
 
 namespace xUnit_TheWebAppTests
 {
-
     public class MyTestServerFixture : TestServerFixture<Startup>
     {
         protected override string RelativePathToHostProject => @"..\..\..\..\TheWebApp";

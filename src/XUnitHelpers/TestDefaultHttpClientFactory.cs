@@ -8,8 +8,8 @@ namespace XUnitHelpers
 {
     public class TestDefaultHttpClientFactory : IDefaultHttpClientFactory
     {
-        public TestServer TestServer { get; set; }
-        public HttpMessageHandler HttpMessageHandler => TestServer.CreateHandler();
-        public HttpClient HttpClient => TestServer.CreateClient();
+
+        public HttpMessageHandler HttpMessageHandler { get; set; }
+        public HttpClient HttpClient { get; set; }
     }
 }

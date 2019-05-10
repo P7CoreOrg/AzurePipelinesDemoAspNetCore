@@ -49,18 +49,20 @@ namespace TheWebApp.Controllers
         // GET: api/SomeThing
         [HttpGet]
         [Route("from-external")]
-        public async Task<IEnumerable<string>> GetFromExternal()
+        public async Task<string> GetFromExternal()
         {
             var httpClient = _defaultHttpClientFactory.HttpClient;
             var httpMessageHandler = _defaultHttpClientFactory.HttpMessageHandler;
             var httpContext = _httpContextAccessor.HttpContext;
+
 
             var req = new HttpRequestMessage(HttpMethod.Get, $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/api/SomeThing/pets");
             var response = await httpClient.SendAsync(req);
 
             httpContext = _httpContextAccessor.HttpContext;
 
-            return new string[] { $"HttpContext:{httpContext != null}" };
+            string result = $"\"HttpContext:{httpContext != null}\"";
+            return result;
 
         }
 
