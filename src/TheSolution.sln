@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoIdentityModelExtras", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "xUnit_TheWebAppTests", "xUnit_TheWebAppTests\xUnit_TheWebAppTests.csproj", "{8FC507DE-1F26-49C0-9FCC-DDFEE22E4F56}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SomeThing2", "SomeThing2\SomeThing2.csproj", "{A1EA6FA4-2C48-4DD2-A3D1-0897E49ED5DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{8FC507DE-1F26-49C0-9FCC-DDFEE22E4F56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FC507DE-1F26-49C0-9FCC-DDFEE22E4F56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8FC507DE-1F26-49C0-9FCC-DDFEE22E4F56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1EA6FA4-2C48-4DD2-A3D1-0897E49ED5DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1EA6FA4-2C48-4DD2-A3D1-0897E49ED5DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1EA6FA4-2C48-4DD2-A3D1-0897E49ED5DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1EA6FA4-2C48-4DD2-A3D1-0897E49ED5DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

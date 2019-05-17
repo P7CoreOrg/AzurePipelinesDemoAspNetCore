@@ -27,6 +27,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DemoIdentityModelExtras\DemoIdentityModelExtras.csproj" />
     <ProjectReference Include="..\DemoLibrary\DemoLibrary.csproj" />
+    <ProjectReference Include="..\SomeThing2\SomeThing2.csproj" />
   </ItemGroup>
 
 </Project>

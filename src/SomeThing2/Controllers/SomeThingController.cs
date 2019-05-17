@@ -13,15 +13,15 @@ namespace TheWebApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SomeThingController : ControllerBase
+    public class SomeThing2Controller : ControllerBase
     {
         private IDog _dog;
         private IDefaultHttpClientFactory _defaultHttpClientFactory;
         private IHttpContextAccessor _httpContextAccessor;
-        private ILogger<SomeThingController> _logger;
+        private ILogger<SomeThing2Controller> _logger;
 
-        public SomeThingController(
-            ILogger<SomeThingController> logger,
+        public SomeThing2Controller(
+            ILogger<SomeThing2Controller> logger,
             IHttpContextAccessor httpContextAccessor,
             IDefaultHttpClientFactory defaultHttpClientFactory,
             IDog dog)

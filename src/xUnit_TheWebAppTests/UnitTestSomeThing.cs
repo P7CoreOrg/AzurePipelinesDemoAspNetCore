@@ -1,10 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using AutoFixture;
+using DemoIdentityModelExtras;
+using DemoLibrary;
+using FakeItEasy;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Shouldly;
+using TheWebApp.Controllers;
 using Xunit;
 
 namespace xUnit_TheWebAppTests
@@ -28,6 +35,25 @@ namespace xUnit_TheWebAppTests
             messageHandler.ShouldNotBeNull();
 
         }
+
+        [Fact]
+        public void raw_get_dog()
+        {
+            var fakeLogger = A.Fake<ILogger<SomeThingController>>();
+            var fakeDefaultHttpClientFactory = A.Fake<IDefaultHttpClientFactory>();
+            A.CallTo(() => fakeDefaultHttpClientFactory.HttpClient).Returns(null);
+            A.CallTo(() => fakeDefaultHttpClientFactory.HttpMessageHandler).Returns(null);
+            var fakeDog = A.Fake<IDog>();
+            A.CallTo(() => fakeDog.Name).Returns("Fido");
+
+            Fixture fixture = new Fixture();
+            var context = fixture.Create<SomeContext<ComplexData>>();
+
+            var controller = new SomeThingController(fakeLogger, null,
+                fakeDefaultHttpClientFactory, fakeDog);
+            var result = controller.GetDogName(context);
+            result.ShouldBeSameAs("Fido");
+        }
         [Fact]
         public async Task Test_Get_NotFound()
         {
@@ -40,10 +66,28 @@ namespace xUnit_TheWebAppTests
             response.StatusCode.ShouldBe(System.Net.HttpStatusCode.NotFound);
         }
         [Fact]
-        public async Task Test_Get_Success()
+        public async Task Test_Get_SomeThing_Success()
         {
             var client = _fixture.Client;
             var req = new HttpRequestMessage(HttpMethod.Get, "/api/SomeThing/dog")
+            {
+                // Content = new FormUrlEncodedContent(dict)
+            };
+            var response = await client.SendAsync(req);
+            response.StatusCode.ShouldBe(System.Net.HttpStatusCode.OK);
+            var jsonString = await response.Content.ReadAsStringAsync();
+            jsonString.ShouldNotBeNullOrWhiteSpace();
+
+            var dogs = JsonConvert.DeserializeObject<List<string>>(jsonString);
+            dogs.ShouldNotBeNull();
+            dogs.Count.ShouldBeGreaterThan(0);
+
+        }
+        [Fact]
+        public async Task Test_Get_SomeThing2_Success()
+        {
+            var client = _fixture.Client;
+            var req = new HttpRequestMessage(HttpMethod.Get, "/api/SomeThing2/dog")
             {
                 // Content = new FormUrlEncodedContent(dict)
             };
